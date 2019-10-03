@@ -22,6 +22,7 @@ wspa.service('nameService',function(){
 
 wspa.controller('mainController', ['$scope','nameService', function ($scope,nameService) {
     $scope.cityName = nameService.city;
+    console.log("Current city is set to :", nameService.city);
     $scope.$watch('cityName',function(){
           nameService.city = $scope.cityName;
       });
@@ -36,7 +37,7 @@ wspa.controller('weatherController',['$scope','$resource','$log','$routeParams',
 
     $scope.cityName = nameService.city;
     $scope.daysNo = $routeParams.daysNo || 1;
-
+    
     $scope.forecastApi = $resource("http://api.openweathermap.org/data/2.5/forecast/daily", { callback: "JSON_CALLBACK" }, {get: { method: "JSONP"}});
     $scope.forecastResult = $scope.forecastApi.get({ q: $scope.cityName, cnt:$scope.daysNo , appid:'8247af4320c30be0cffb3d510f263690'});
     
@@ -56,7 +57,7 @@ wspa.directive('wspaResult',function(){
         replace:true,
         scope:{
             forecast: '=',
-            convertToTempUnit: '&',
+            convertToTempUnit: '@',
             convertToDate: '&',
             dateFormat: '@',
         }
